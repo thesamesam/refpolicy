@@ -1938,6 +1938,26 @@ interface(`systemd_dbus_chat_hostnamed',`
 
 ########################################
 ## <summary>
+##   Connect to /run/systemd/userdb/io.systemd.Machine to
+##   query machine information.
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+#
+interface(`systemd_stream_connect_machined',`
+	gen_require(`
+		type systemd_userdbd_t;
+		type systemd_machined_t;
+	')
+
+	stream_connect_pattern($1, systemd_userdbd_runtime_t, systemd_userdbd_runtime_t, systemd_machined_t)
+')
+
+########################################
+## <summary>
 ##      allow systemd_passwd_agent to inherit fds
 ## </summary>
 ## <param name="domain">
