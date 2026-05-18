@@ -1,0 +1,63 @@
+policy_module(jobserver)
+
+########################################
+#
+# Declarations
+#
+
+type jobserver_t;
+type jobserver_exec_t;
+init_daemon_domain(jobserver_t, jobserver_exec_t)
+
+type jobserver_device_t;
+dev_node(jobserver_device_t)
+
+type jobserver_initrc_exec_t;
+init_script_file(jobserver_initrc_exec_t)
+
+type jobserver_runtime_t alias jobserver_var_run_t;
+files_runtime_file(jobserver_runtime_t)
+
+type jobserver_unit_t;
+init_unit_file(jobserver_unit_t)
+
+type jobserver_var_lib_t;
+files_type(jobserver_var_lib_t)
+
+#
+
+type jobserver_client_t;
+type jobserver_client_exec_t;
+
+userdom_user_application_domain(jobserver_client_t, jobserver_client_exec_t)
+
+########################################
+#
+# Local policy
+#
+allow jobserver_t self:process signal_perms;
+# TODO: check this
+allow jobserver_t self:fifo_file rw_fifo_file_perms;
+
+dev_read_sysfs(jobserver_t)
+dev_rw_cuse(jobserver_t)
+
+kernel_read_system_state(jobserver_t)
+kernel_read_kernel_sysctls(jobserver_t)
+
+files_runtime_filetrans(jobserver_t, jobserver_runtime_t, file)
+files_read_etc_runtime_files(jobserver_t)
+
+# TODO: allow just cuse
+fs_getattr_all_fs(jobserver_t)
+
+logging_send_syslog_msg(jobserver_t)
+
+manage_chr_files_pattern(jobserver_t, device_t, jobserver_device_t)
+manage_files_pattern(jobserver_t, jobserver_runtime_t, jobserver_runtime_t)
+
+# Needs to know when an arbitrary process has disappeared to reap its tokens
+domain_read_all_domains_state(jobserver_t)
+
+# TODO: May be needed when drops privs?
+#auth_use_nsswitch(jobserver_t)

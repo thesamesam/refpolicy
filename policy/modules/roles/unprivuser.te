@@ -26,6 +26,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	jobserver_use(user_t)
+')
+
+optional_policy(`
 	screen_role_template(user, user_t, user_application_exec_domain, user_r)
 ')
 

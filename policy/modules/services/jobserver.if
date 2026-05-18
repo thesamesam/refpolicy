@@ -1,0 +1,70 @@
+## <summary>GNU Make jobserver implementations</summary>
+
+########################################
+## <summary>
+##	All of the rules required to
+##	administrate an GNU Make jobserver implementation.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`jobserver_admin',`
+	gen_require(`
+		type jobserver_t, jobserver_exec_t, jobserver_initrc_exec_t;
+		type jobserver_runtime_t;
+	')
+
+	init_startstop_service($1, $2, jobserver_t, jobserver_initrc_exec_t)
+
+	ps_process_pattern($1, jobserver_t)
+
+	# TODO: Special jobserver clients are allowed to use ioctls to adjust configuration
+
+	files_search_runtime($1)
+	admin_pattern($1, jobserver_runtime_t)
+
+	jobserver_use($1)
+')
+
+########################################
+## <summary>
+##      All of the rules required to
+##      use an GNU Make jobserver implementation.
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+## <param name="role">
+##      <summary>
+##      Role allowed access.
+##      </summary>
+## </param>
+## <rolecap/>
+#
+interface(`jobserver_use',`
+	gen_require(`
+		type jobserver_t;
+		type jobserver_device_t;
+	')
+
+	ps_process_pattern($1, jobserver_t)
+
+	# Allow basic interactions with /dev/steve
+	#
+	# Misc binaries need to be able to rw the jobserver character device because
+	# jobserver clients (e.g. make/ninja/cargo) dont have their own context.
+	#
+	# TODO: restrict ioctl
+	allow $1 jobserver_device_t:chr_file rw_chr_file_perms;
+')

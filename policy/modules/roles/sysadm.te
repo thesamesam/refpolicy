@@ -577,6 +577,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	jobserver_admin(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	kdump_admin(sysadm_t, sysadm_r)
 ')
 

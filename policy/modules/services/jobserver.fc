@@ -1,0 +1,15 @@
+/dev/steve	-c	gen_context(system_u:object_r:jobserver_device_t,s0)
+/dev/guild	-c	gen_context(system_u:object_r:jobserver_device_t,s0)
+
+# Daemons themselves
+/usr/bin/steve	--	gen_context(system_u:object_r:jobserver_exec_t,s0)
+/usr/bin/guildmaster	--	gen_context(system_u:object_r:jobserver_exec_t,s0)
+
+# Clients
+/usr/bin/stevie	--	gen_context(system_u:object_r:jobserver_client_exec_t,s0)
+/usr/bin/gm-run	--	gen_context(system_u:object_r:jobserver_client_exec_t,s0)
+
+/etc/rc\.d/init\.d/(steve|guildmaster)	--	gen_context(system_u:object_r:jobserver_initrc_exec_t,s0)
+/usr/lib/systemd/system/[^/]*(steve|guildmaster).*	--	gen_context(system_u:object_r:jobserver_unit_t,s0)
+
+/run/(steve|guildmaster)\.pid	--	gen_context(system_u:object_r:jobserver_runtime_t,s0)
