@@ -1,0 +1,6 @@
+/usr/bin/pfl	--	gen_context(system_u:object_r:pfl_exec_t,s0)
+/usr/lib/python-exec/python[0-9]\.[0-9]*/pfl	--	gen_context(system_u:object_r:pfl_exec_t,s0)
+
+/usr/lib/systemd/system/pfl.*\.service	--	gen_context(system_u:object_r:pfl_unit_t,s0)
+
+/var/lib/pfl(/.*)?	--	gen_context(system_u:object_r:pfl_db_t,s0)

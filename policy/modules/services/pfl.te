@@ -1,0 +1,45 @@
+policy_module(pfl)
+
+########################################
+#
+# Declarations
+#
+
+type pfl_t;
+type pfl_exec_t;
+init_daemon_domain(pfl_t, pfl_exec_t)
+
+type pfl_db_t;
+files_type(pfl_db_t)
+
+type pfl_tmp_t;
+files_tmp_file(pfl_tmp_t)
+
+type pfl_unit_t;
+init_unit_file(pfl_unit_t)
+
+########################################
+#
+# Local policy
+#
+
+# TODO: Python jit
+allow pfl_t self:process execmem;
+
+auth_use_nsswitch(pfl_t)
+
+# bzip2 to compress result before upload
+corecmd_exec_bin(pfl_t)
+# .. via os.system()
+corecmd_exec_shell(pfl_t)
+
+files_tmp_filetrans(pfl_t, pfl_tmp_t, { file dir })
+manage_dirs_pattern(pfl_t, pfl_tmp_t, pfl_tmp_t)
+manage_files_pattern(pfl_t, pfl_tmp_t, pfl_tmp_t)
+
+miscfiles_read_localization(pfl_t)
+
+portage_read_cache(pfl_t)
+portage_read_config(pfl_t)
+portage_read_db(pfl_t)
+portage_read_ebuild(pfl_t)
