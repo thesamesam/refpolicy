@@ -1993,6 +1993,24 @@ interface(`dev_rw_crypto',`
 	rw_chr_files_pattern($1, device_t, crypt_device_t)
 ')
 
+########################################
+## <summary>
+##    Read and write the cuse device.
+## </summary>
+## <param name="domain">
+##    <summary>
+##    Domain allowed access.
+##    </summary>
+## </param>
+#
+interface(`dev_rw_cuse',`
+	gen_require(`
+		type device_t, cuse_device_t;
+	')
+
+	rw_chr_files_pattern($1, device_t, cuse_device_t)
+')
+
 #######################################
 ## <summary>
 ##	Set the attributes of the dlm control devices.

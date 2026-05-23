@@ -91,6 +91,12 @@ type crypt_device_t;
 dev_node(crypt_device_t)
 
 #
+# Type for /dev/cuse
+#
+type cuse_device_t;
+dev_node(cuse_device_t)
+
+#
 # Type for /dev/dax*.*
 #
 type dax_device_t;
